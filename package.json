@@ -1,0 +1,22 @@
+{
+  "name": "mindweaver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/falstack/mindweaver.git"
+  },
+  "keywords": [
+    "mindweaver"
+  ],
+  "author": "falstack",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/falstack/mindweaver/issues"
+  },
+  "homepage": "https://github.com/falstack/mindweaver#readme"
+}
