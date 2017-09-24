@@ -23,6 +23,7 @@ module.exports = {
       'vue$': 'vue/dist/vue.common.js',
       'view': resolve('./src/views'),
       'assets': resolve('./src/assets'),
+      'layout': resolve('./src/views/layouts'),
       'service': resolve('./src/services'),
       'component': resolve('./src/components')
     }
@@ -90,7 +91,8 @@ module.exports = {
         test: /\.(js|vue)?$/,
         loader: 'eslint-loader',
         options: {
-          enforce: 'pre'
+          enforce: 'pre',
+          cacheDirectory: true
         },
         exclude: /(node_modules)/
       },
