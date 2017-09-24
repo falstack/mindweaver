@@ -5,18 +5,66 @@ const resolve = file => path.resolve(__dirname, file)
 
 module.exports = {
   entry: {
-    app: './entry.js',
+    app: './src/entry.js',
+    vendor: [
+      'vue',
+      'vuex',
+      'vue-router',
+    ]
   },
   output: {
-    path: resolve('./dist/img'),
-    publicPath: '/dist/img/',
+    path: resolve('./dist/assets/img'),
+    publicPath: '/assets/img/',
     filename: '../js/[name].js'
   },
   resolve: {
-    extensions: ['.js', '.scss']
+    extensions: ['.js', '.vue', '.scss'],
+    alias: {
+      'vue$': 'vue/dist/vue.common.js',
+      'view': resolve('./src/views'),
+      'assets': resolve('./src/assets'),
+      'service': resolve('./src/services'),
+      'component': resolve('./src/components')
+    }
   },
   module: {
     rules: [
+      {
+        test: /\.vue$/,
+        use: [
+          {
+            loader: 'vue-loader',
+            options: {
+              extractCSS: true,
+              postcss: [
+                require('autoprefixer')({
+                  browsers: [
+                    'last 3 versions'
+                  ]
+                })
+              ],
+              loaders: {
+                scss: ExtractTextPlugin.extract({
+                  fallback: 'vue-style-loader',
+                  use: [
+                    'css-loader',
+                    'sass-loader',
+                    {
+                      loader: 'sass-resources-loader',
+                      options: {
+                        resources: [
+                          resolve('./src/assets/css/variables.scss'),
+                          resolve('./src/assets/css/mixins.scss')
+                        ]
+                      }
+                    }
+                  ]
+                })
+              }
+            }
+          }
+        ]
+      },
       {
         test: /\.js$/,
         loader: 'babel-loader',
@@ -37,7 +85,15 @@ module.exports = {
           limit: 10000,
           name: '../fonts/[name].[ext]?[hash:8]'
         }
-      }
+      },
+      {
+        test: /\.(js|vue)?$/,
+        loader: 'eslint-loader',
+        options: {
+          enforce: 'pre'
+        },
+        exclude: /(node_modules)/
+      },
     ]
   },
   plugins: [
@@ -54,6 +110,9 @@ module.exports = {
     }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'manifest'
+    }),
+    new webpack.ProvidePlugin({
+
     })
   ],
   stats: {
