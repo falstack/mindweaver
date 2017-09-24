@@ -1,10 +1,12 @@
 <style lang="scss" scoped="">
-
+  .range {
+    width: 100%;
+  }
 </style>
 
 <template>
   <div>
-    this is index page
+    <input class="range" type="range" v-model="range" min="1" max="100">
   </div>
 </template>
 
@@ -25,7 +27,7 @@
     },
     data () {
       return {
-
+        range: 0
       }
     },
     created () {
