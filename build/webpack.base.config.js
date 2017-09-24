@@ -1,31 +1,26 @@
 const path = require('path')
 const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const resolve = file => path.resolve(__dirname, file)
+const isProd = process.env.NODE_ENV === 'production'
 
 module.exports = {
-  entry: {
-    app: './src/entry.js',
-    vendor: [
-      'vue',
-      'vuex',
-      'vue-router',
-    ]
-  },
+  devtool: isProd ? false : 'cheap-module-source-map',
   output: {
-    path: resolve('./dist/assets/img'),
+    path: resolve('../dist/assets/img'),
     publicPath: '/assets/img/',
-    filename: '../js/[name].js'
+    filename: '../js/[name].[chunkhash:8]..js'
   },
   resolve: {
     extensions: ['.js', '.vue', '.scss'],
     alias: {
       'vue$': 'vue/dist/vue.common.js',
-      'view': resolve('./src/views'),
-      'assets': resolve('./src/assets'),
-      'layout': resolve('./src/views/layouts'),
-      'service': resolve('./src/services'),
-      'component': resolve('./src/components')
+      'view': resolve('../src/views'),
+      'assets': resolve('../src/assets'),
+      'layout': resolve('../src/views/layouts'),
+      'service': resolve('../src/services'),
+      'component': resolve('../src/components')
     }
   },
   module: {
@@ -36,7 +31,8 @@ module.exports = {
           {
             loader: 'vue-loader',
             options: {
-              extractCSS: true,
+              extractCSS: process.env.NODE_ENV === 'production',
+              preserveWhitespace: false,
               postcss: [
                 require('autoprefixer')({
                   browsers: [
@@ -45,23 +41,21 @@ module.exports = {
                 })
               ],
               loaders: {
-                scss: ExtractTextPlugin.extract({
-                  fallback: 'vue-style-loader',
-                  use: [
-                    'css-loader',
-                    'sass-loader',
-                    {
-                      loader: 'sass-resources-loader',
-                      options: {
-                        resources: [
-                          resolve('./src/assets/css/variables.scss'),
-                          resolve('./src/assets/css/mixins.scss')
-                        ]
-                      }
+                scss: [
+                  'vue-style-loader',
+                  'css-loader',
+                  'sass-loader',
+                  {
+                    loader: 'sass-resources-loader',
+                    options: {
+                      resources: [
+                        resolve('../src/assets/css/variables.scss'),
+                        resolve('../src/assets/css/mixins.scss')
+                      ]
                     }
-                  ]
-                })
-              }
+                  }
+                ],
+              },
             }
           }
         ]
@@ -99,25 +93,20 @@ module.exports = {
     ]
   },
   plugins: [
-    new ExtractTextPlugin('../css/style.css'),
-    new webpack.optimize.ModuleConcatenationPlugin(),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks: function (module) {
-        return (
-          /node_modules/.test(module.context) &&
-          !/\.css$/.test(module.request)
-        )
-      }
-    }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'manifest'
-    }),
     new webpack.ProvidePlugin({
 
     })
-  ],
-  stats: {
-    children: false
-  }
+  ].concat(isProd
+    ? [
+      new webpack.optimize.UglifyJsPlugin({
+        compress: { warnings: false }
+      }),
+      new ExtractTextPlugin({
+        filename: '../css/common.[chunkhash:8].css'
+      }),
+      new webpack.optimize.ModuleConcatenationPlugin()
+    ]
+    : [
+      new FriendlyErrorsPlugin()
+  ])
 }

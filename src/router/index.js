@@ -3,14 +3,16 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
-export default new Router({
-  mode: 'history',
-  scrollBehavior: () => ({ y: 0 }),
-  routes: [
-    {
-      path: '/',
-      name: '首页',
-      component: require('view/index').default
-    }
-  ]
-})
+export function createRouter () {
+  return new Router({
+    mode: 'history',
+    scrollBehavior: () => ({ y: 0 }),
+    routes: [
+      {
+        path: '/',
+        name: '首页',
+        component: () => import('view/index')
+      }
+    ]
+  })
+}
