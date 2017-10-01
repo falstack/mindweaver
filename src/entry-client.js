@@ -1,7 +1,7 @@
-import Vue from 'vue'
 import 'es6-promise/auto'
+import Vue from 'vue'
 import { createApp } from './app'
-import ProgressBar from './views/layouts/progress'
+import ProgressBar from './components/ProgressBar.vue'
 
 // 进度条
 const bar = Vue.prototype.$bar = new Vue(ProgressBar).$mount()
@@ -64,8 +64,3 @@ router.onReady(() => {
   // actually mount to DOM
   app.$mount('#app')
 })
-
-// service worker
-// if ('https:' === location.protocol && navigator.serviceWorker) {
-//   navigator.serviceWorker.register('/service-worker.js')
-// }

@@ -2,15 +2,16 @@ const path = require('path')
 const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+const CompressionPlugin = require('compression-webpack-plugin')
 const resolve = file => path.resolve(__dirname, file)
 const isProd = process.env.NODE_ENV === 'production'
 
 module.exports = {
-  devtool: isProd ? false : 'cheap-module-source-map',
+  devtool: isProd ? 'sourcemap' : false,
   output: {
-    path: resolve('../dist/assets/img'),
-    publicPath: '/assets/img/',
-    filename: '../js/[name].[chunkhash:8]..js'
+    path: resolve('../dist'),
+    publicPath: '/dist/',
+    filename: '[name].[chunkhash].js'
   },
   resolve: {
     extensions: ['.js', '.vue', '.scss'],
@@ -24,6 +25,7 @@ module.exports = {
     }
   },
   module: {
+    noParse: /es6-promise\.js$/,
     rules: [
       {
         test: /\.vue$/,
@@ -36,7 +38,16 @@ module.exports = {
               postcss: [
                 require('autoprefixer')({
                   browsers: [
-                    'last 3 versions'
+                    'last 3 versions',
+                    'ie >= 8',
+                    'ie_mob >= 10',
+                    'ff >= 26',
+                    'chrome >= 30',
+                    'safari >= 6',
+                    'opera >= 23',
+                    'ios >= 5',
+                    'android >= 2.3',
+                    'bb >= 10'
                   ]
                 })
               ],
@@ -54,8 +65,8 @@ module.exports = {
                       ]
                     }
                   }
-                ],
-              },
+                ]
+              }
             }
           }
         ]
@@ -78,35 +89,63 @@ module.exports = {
         loader: 'url-loader',
         query: {
           limit: 10000,
-          name: '../fonts/[name].[ext]?[hash:8]'
+          name: '[name].[ext]?[hash:8]'
         }
       },
       {
-        test: /\.(js|vue)?$/,
-        loader: 'eslint-loader',
-        options: {
-          enforce: 'pre',
-          cacheDirectory: true
-        },
-        exclude: /(node_modules)/
+        test: /\.css$/,
+        use: isProd
+          ? ExtractTextPlugin.extract({
+            use: 'css-loader?minimize',
+            fallback: 'vue-style-loader'
+          })
+          : ['vue-style-loader', 'css-loader']
       },
+      {
+        test: /\.(js|vue)$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'eslint-loader',
+          options: {
+            enforce: 'pre',
+            cacheDirectory: true
+          }
+        }
+      }
     ]
   },
+  performance: {
+    maxEntrypointSize: 300000,
+    hints: isProd ? 'warning' : false
+  },
   plugins: [
+    new webpack.ContextReplacementPlugin(/moment[\\\/]locale$/, /^\.\/(zh-cn|zh-tw)$/),
     new webpack.ProvidePlugin({
-
+      _: 'lodash',
+      moment: 'moment',
+      Cookies: 'js-cookie'
     })
   ].concat(isProd
     ? [
       new webpack.optimize.UglifyJsPlugin({
-        compress: { warnings: false }
+        sourceMap: true,
+        compress: {
+          warnings: false
+        }
       }),
       new ExtractTextPlugin({
-        filename: '../css/common.[chunkhash:8].css'
+        filename: 'common.[chunkhash].css'
       }),
-      new webpack.optimize.ModuleConcatenationPlugin()
+      new webpack.optimize.ModuleConcatenationPlugin(),
+      new CompressionPlugin({
+        asset: '[path].gz[query]',
+        algorithm: 'gzip',
+        test: /\.(js|css|json)$/,
+        threshold: 10240,
+        minRatio: 0.8
+      })
     ]
     : [
       new FriendlyErrorsPlugin()
-  ])
+    ])
 }

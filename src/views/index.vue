@@ -1,12 +1,30 @@
 <style lang="scss" scoped="">
-  .range {
+  .space {
+    position: absolute;
+    left: 0;
+    top: 0;
     width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    perspective-origin: 50% 50%;
+  }
+
+  .box {
+    width: 200px;
+    height: 200px;
+    background-color: red;
   }
 </style>
 
 <template>
   <div>
-    <input class="range" type="range" v-model="range" min="1" max="100">
+    <div class="space" :style="spaceStyle">
+      <div class="box">{{ range }}</div>
+    </div>
+    <v-range v-model="range"></v-range>
   </div>
 </template>
 
@@ -23,17 +41,16 @@
 
     },
     computed: {
-
+      spaceStyle () {
+        return { perspective: `${this.range}px` }
+      }
     },
     data () {
       return {
-        range: 0
+        range: 10
       }
     },
     created () {
-
-    },
-    methods: {
 
     },
     mounted () {

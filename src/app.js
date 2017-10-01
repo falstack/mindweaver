@@ -4,8 +4,10 @@ import { createStore } from './store'
 import { createRouter } from './router'
 import { sync } from 'vuex-router-sync'
 import titleMixin from './utils/title'
+import Range from 'component/range.vue'
 
 Vue.mixin(titleMixin)
+Vue.component(Range.name, Range)
 
 // Expose a factory function that creates a fresh set of store, router,
 // app instances on each call (which is called for each SSR request)
