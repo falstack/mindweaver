@@ -121,9 +121,7 @@ module.exports = {
   plugins: [
     new webpack.ContextReplacementPlugin(/moment[\\\/]locale$/, /^\.\/(zh-cn|zh-tw)$/),
     new webpack.ProvidePlugin({
-      _: 'lodash',
-      moment: 'moment',
-      Cookies: 'js-cookie'
+      _: 'lodash'
     })
   ].concat(isProd
     ? [

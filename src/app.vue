@@ -4,13 +4,20 @@
   #app {
     height: 100%;
     width: 100%;
+
+    #main-view {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      perspective-origin: 50% 50%;
+    }
   }
 </style>
 
 <template>
   <div id="app">
     <v-header></v-header>
-    <router-view id="__view"></router-view>
+    <router-view id="main-view"></router-view>
   </div>
 </template>
 
