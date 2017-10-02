@@ -15,7 +15,7 @@
 
 <template>
   <section class="space" :style="spaceScale">
-    <span>
+    <span :style="{ lineHeight: '100px' }">
       i am level {{ item.level }}
     </span>
   </section>
@@ -50,9 +50,9 @@
     },
     computed: {
       spaceScale () {
-        const scale = (this.zone - this.item.level) / this.zone
+        const scale = 1 / (this.item.level + 1)
         const level = this.range / this.rate - this.item.level
-        const show = level >= 0 && level <= 1
+        const show = level > 0 && level <= 1
         return {
           opacity: show ? 1 : 0,
           pointerEvents: show ? 'auto' : 'none',
