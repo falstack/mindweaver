@@ -34,29 +34,17 @@
       item: {
         required: true,
         type: Object
-      },
-      rate: {
-        required: true,
-        type: Number
-      },
-      range: {
-        required: true,
-        type: Number
-      },
-      zone: {
-        required: true,
-        type: Number
       }
     },
     computed: {
       spaceScale () {
         const scale = 1 / (this.item.index + 1)
-        const index = this.range / this.rate - this.item.index
+        const index = this.$store.state.index.range.now / this.$rate - this.item.index
         const show = index > 0 && index <= 1
         return {
           opacity: show ? 1 : 0,
           pointerEvents: show ? 'auto' : 'none',
-          transform: `translateZ(${this.item.index * this.rate}px) scale3d(${scale}, ${scale}, 1)`
+          transform: `translateZ(${this.item.index * this.$rate}px) scale3d(${scale}, ${scale}, 1)`
         }
       }
     }

@@ -4,8 +4,10 @@ import { createStore } from './store'
 import { createRouter } from './router'
 import { sync } from 'vuex-router-sync'
 import titleMixin from './utils/title'
+import Helpers from './utils/helpers'
 import Range from 'component/range.vue'
 
+Vue.use(Helpers)
 Vue.mixin(titleMixin)
 Vue.component(Range.name, Range)
 
