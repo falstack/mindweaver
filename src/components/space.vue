@@ -30,9 +30,6 @@
    */
   export default {
     name: 'v-space',
-    components: {
-
-    },
     props: {
       item: {
         required: true,
@@ -51,9 +48,6 @@
         type: Number
       }
     },
-    watch: {
-
-    },
     computed: {
       spaceScale () {
         const scale = (this.zone - this.item.level) / this.zone
@@ -65,20 +59,6 @@
           transform: `translate3d(-50%, -50%, ${this.item.level * this.rate}px) scale3d(${scale}, ${scale}, 1)`
         }
       }
-    },
-    data () {
-      return {
-
-      }
-    },
-    created () {
-
-    },
-    methods: {
-
-    },
-    mounted () {
-
     }
   }
 </script>

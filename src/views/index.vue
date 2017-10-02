@@ -11,11 +11,16 @@
 <template>
   <div :style="spaceStyle">
     <v-space v-for="item in maps"
+             :key="item.level"
              :item="item"
              :zone="maps.length"
              :rate="rate"
              :range="range.now"
+             v-if="maps.length"
     ></v-space>
+    <template v-else>
+      loading...
+    </template>
     <div class="time-line">
       <v-range v-model="range.now"
                :min='range.min'
@@ -46,36 +51,28 @@
           max: 0,
           now: 0
         },
-        maps: [
-          {
-            level: 0
-          },
-          {
-            level: 1
-          },
-          {
-            level: 2
-          },
-          {
-            level: 3
-          },
-          {
-            level: 4
-          },
-          {
-            level: 5
-          }
-        ]
+        maps: []
       }
     },
     created () {
-      this.range = {
-        min: this.rate,
-        max: this.maps.length * this.rate,
-        now: this.maps.length * this.rate
-      }
+      this.getData()
     },
     methods: {
+      getData () {
+        this.maps = [
+          { level: 0 },
+          { level: 1 },
+          { level: 2 },
+          { level: 3 },
+          { level: 4 },
+          { level: 5 }
+        ]
+        this.range = {
+          min: this.rate,
+          max: this.maps.length * this.rate,
+          now: this.maps.length * this.rate
+        }
+      },
       carousel (e) {
         const delta = e.wheelDelta || -e.detail
         if (delta > 0 && this.range.now < this.range.max) {
