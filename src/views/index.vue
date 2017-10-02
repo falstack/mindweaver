@@ -51,7 +51,61 @@
           max: 0,
           now: 0
         },
-        maps: []
+        maps: [],
+        resource: {
+          id: 1,
+          index: 0,
+          depth: 4,
+          key: '0-0',
+          value: '这是根节点，它有一个子元素，是一个递归树',
+          children: [
+            {
+              id: 2,
+              index: 1,
+              key: '1-0',
+              value: '一级节点，它有一个子元素',
+              children: [
+                {
+                  id: 4,
+                  index: 2,
+                  key: '2-0',
+                  value: '二级节点，它没有子元素',
+                  children: []
+                }
+              ]
+            },
+            {
+              id: 3,
+              index: 1,
+              key: '1-1',
+              value: '一级节点，它有两个子元素',
+              children: [
+                {
+                  id: 5,
+                  index: 2,
+                  key: '2-1',
+                  value: '二级节点，它没有子元素',
+                  children: []
+                },
+                {
+                  id: 6,
+                  index: 2,
+                  key: '2-2',
+                  value: '二级节点，它有一个子元素',
+                  children: [
+                    {
+                      id: 7,
+                      index: 3,
+                      key: '3-0',
+                      value: '三级节点，它没有子元素',
+                      children: []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
       }
     },
     created () {
