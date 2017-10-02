@@ -1,8 +1,8 @@
 <style lang="scss" scoped="">
   .space {
     position: absolute;
-    left: 50%;
-    top: 50%;
+    left: 0;
+    top: 0;
     width: 100%;
     height: 100%;
     background-color: transparent;
@@ -56,7 +56,7 @@
         return {
           opacity: show ? 1 : 0,
           pointerEvents: show ? 'auto' : 'none',
-          transform: `translate3d(-50%, -50%, ${this.item.level * this.rate}px) scale3d(${scale}, ${scale}, 1)`
+          transform: `translateZ(${this.item.level * this.rate}px) scale3d(${scale}, ${scale}, 1)`
         }
       }
     }
