@@ -11,7 +11,7 @@
 <template>
   <div :style="spaceStyle">
     <v-space v-for="item in maps"
-             :key="item.level"
+             :key="item.id"
              :item="item"
              :zone="maps.length"
              :rate="rate"
@@ -60,12 +60,12 @@
     methods: {
       getData () {
         this.maps = [
-          { level: 0 },
-          { level: 1 },
-          { level: 2 },
-          { level: 3 },
-          { level: 4 },
-          { level: 5 }
+          { id: 1, index: 0 },
+          { id: 2, index: 1 },
+          { id: 3, index: 2 },
+          { id: 4, index: 3 },
+          { id: 5, index: 4 },
+          { id: 6, index: 5 }
         ]
         this.range = {
           min: this.rate,
