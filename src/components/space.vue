@@ -14,9 +14,16 @@
 </style>
 
 <template>
-  <section class="space" :style="spaceScale">
-    <h1 :style="{ lineHeight: '100px' }">i am level {{ item.index + 1 }}</h1>
-    <p v-text="item.value"></p>
+  <section class="space" :style="spaceScale" v-if="show">
+    <v-space v-if="item.children.length"
+             v-for="child in item.children"
+             :key="child.id"
+             :item="child"
+    ></v-space>
+    <template v-if="node">
+      <h1 :style="{ lineHeight: '100px' }">i am level {{ item.index + 1 }}</h1>
+      <p v-text="item.value"></p>
+    </template>
   </section>
 </template>
 
@@ -35,16 +42,47 @@
         type: Object
       }
     },
+    data () {
+      return {
+        show: false,
+        scale: 1,
+        zone: 0,
+        node: true
+      }
+    },
+    watch: {
+      range: {
+        handler () {
+          this.checkShow()
+        },
+        deep: true
+      }
+    },
     computed: {
       spaceScale () {
-        const range = this.$store.state.index.range
-        const scale = 1 / (range.max / this.$rate - this.item.index)
-        const index = (range.max - range.now) / this.$rate - this.item.index
-        const show = index >= 0 && index < 1
-        return {
-          opacity: show ? 1 : 0,
-          pointerEvents: show ? 'auto' : 'none',
-          transform: `translateZ(${range.max - (this.item.index + 1) * this.$rate}px) scale3d(${scale}, ${scale}, 1)`
+        return this.node
+          ? { transform: `translateZ(${this.zone}px) scale3d(${this.scale}, ${this.scale}, 1)` }
+          : {}
+      },
+      range () {
+        return this.$store.state.index.range
+      }
+    },
+    created () {
+      this.checkShow()
+    },
+    methods: {
+      checkShow () {
+        const index = (this.range.max - this.range.now) / this.$rate - this.item.index
+        this.show = index >= 0
+        if (index >= 1) {
+          this.scale = 1
+          this.zone = 0
+          this.node = false
+        } else {
+          this.scale = 1 / (this.range.max / this.$rate - this.item.index)
+          this.zone = this.range.max - (this.item.index + 1) * this.$rate
+          this.node = true
         }
       }
     }

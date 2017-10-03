@@ -10,11 +10,14 @@
 
 <template>
   <div :style="spaceStyle">
+    <!--
     <v-space v-for="item in maps"
              :key="item.id"
              :item="item"
              v-if="maps.length"
     ></v-space>
+    -->
+    <v-space v-if="maps" :item="maps"></v-space>
     <template v-else>
       loading...
     </template>
@@ -29,8 +32,6 @@
 </template>
 
 <script>
-  import vSpace from 'component/space.vue'
-
   const tree2Array = (object, array = []) => {
     array.push(object)
     if (object.children.length) {
@@ -97,9 +98,6 @@
 
   export default {
     name: 'v-page-index',
-    components: {
-      vSpace
-    },
     computed: {
       spaceStyle () {
         return { perspective: `${this.range.now}px` }
@@ -118,9 +116,10 @@
     },
     methods: {
       getData () {
-        const arr = []
-        tree2Array(resource, arr)
-        this.maps = _.orderBy(arr, ['index', 'subIndex'])
+//        const arr = []
+//        tree2Array(resource, arr)
+//        this.maps = _.orderBy(arr, ['index', 'subIndex'])
+        this.maps = resource
         this.$store.commit('set_range', {
           min: this.$rate,
           max: resource.depth * this.$rate,
