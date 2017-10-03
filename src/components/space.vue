@@ -15,9 +15,8 @@
 
 <template>
   <section class="space" :style="spaceScale">
-    <span>
-      i am level {{ item.index + 1 }}
-    </span>
+    <h1 :style="{ lineHeight: '100px' }">i am level {{ item.index + 1 }}</h1>
+    <p v-text="item.value"></p>
   </section>
 </template>
 
@@ -38,13 +37,14 @@
     },
     computed: {
       spaceScale () {
-        const scale = 1 / (this.item.index + 1)
-        const index = this.$store.state.index.range.now / this.$rate - this.item.index
-        const show = index > 0 && index <= 1
+        const range = this.$store.state.index.range
+        const scale = 1 / (range.max / this.$rate - this.item.index)
+        const index = (range.max - range.now) / this.$rate - this.item.index
+        const show = index >= 0 && index < 1
         return {
           opacity: show ? 1 : 0,
           pointerEvents: show ? 'auto' : 'none',
-          transform: `translateZ(${this.item.index * this.$rate}px) scale3d(${scale}, ${scale}, 1)`
+          transform: `translateZ(${range.max - (this.item.index + 1) * this.$rate}px) scale3d(${scale}, ${scale}, 1)`
         }
       }
     }
