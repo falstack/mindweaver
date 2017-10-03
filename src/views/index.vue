@@ -46,7 +46,7 @@
     index: 0,
     depth: 4,
     subIndex: 0,
-    value: '这是根节点，它有一个子元素，是一个递归树',
+    value: '这是根节点，它有两个子元素，是一个递归树',
     children: [
       {
         id: 2,

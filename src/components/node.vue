@@ -1,10 +1,16 @@
 <style lang="scss" scoped="">
-
+  .node {
+    position: absolute;
+  }
 </style>
 
 <template>
-  <div>
-    <h1 :style="{ lineHeight: '100px' }">i am level {{ item.index + 1 }}</h1>
+  <div class="node">
+    <v-node v-if="showChild"
+            v-for="child in item.children"
+            :item="child"
+    ></v-node>
+    <h1 :style="{ lineHeight: '100px' }">i am level {{ item.index }}</h1>
     <p v-text="item.value"></p>
   </div>
 </template>
@@ -20,7 +26,15 @@
 
     },
     computed: {
-
+      showChild () {
+        return (
+          this.item.children.length &&
+          this.item.index < parseInt((this.range.max - this.range.now) / this.$rate, 10) + 1
+        )
+      },
+      range () {
+        return this.$store.state.index.range
+      }
     },
     data () {
       return {
