@@ -51,9 +51,9 @@
     },
     computed: {
       spaceScale () {
-        return this.node
-          ? { transform: `translateZ(${this.zone}px) scale3d(${this.scale}, ${this.scale}, 1)` }
-          : {}
+        return this.node ? {
+          transform: `translateZ(${this.zone}px) scale3d(${this.scale}, ${this.scale}, 1)`
+        } : {}
       },
       range () {
         return this.$store.state.index.range

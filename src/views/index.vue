@@ -92,6 +92,36 @@
             ]
           }
         ]
+      },
+      {
+        id: 3,
+        index: 1,
+        subIndex: 2,
+        value: '一级节点，它有两个子元素',
+        children: [
+          {
+            id: 5,
+            index: 2,
+            subIndex: 1,
+            value: '二级节点，它没有子元素',
+            children: []
+          },
+          {
+            id: 6,
+            index: 2,
+            subIndex: 2,
+            value: '二级节点，它有一个子元素',
+            children: [
+              {
+                id: 7,
+                index: 3,
+                subIndex: 0,
+                value: '三级节点，它没有子元素',
+                children: []
+              }
+            ]
+          }
+        ]
       }
     ]
   }
