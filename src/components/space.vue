@@ -20,20 +20,11 @@
              :key="child.id"
              :item="child"
     ></v-space>
-    <template v-if="node">
-      <h1 :style="{ lineHeight: '100px' }">i am level {{ item.index + 1 }}</h1>
-      <p v-text="item.value"></p>
-    </template>
+    <v-node v-if="node" :item="item"></v-node>
   </section>
 </template>
 
 <script>
-  /**
-   * newSize:
-   * perspective === 0 ? return oldSize
-   * perspective === translateZ ? return infinity
-   * return perspective / (perspective - translateZ) * oldSize
-   */
   export default {
     name: 'v-space',
     props: {

@@ -3,7 +3,10 @@
 </style>
 
 <template>
-
+  <div>
+    <h1 :style="{ lineHeight: '100px' }">i am level {{ item.index + 1 }}</h1>
+    <p v-text="item.value"></p>
+  </div>
 </template>
 
 <script>
@@ -12,9 +15,7 @@
     components: {
 
     },
-    props: {
-
-    },
+    props: ['item'],
     watch: {
 
     },
