@@ -10,7 +10,7 @@
             v-for="child in item.children"
             :item="child"
             :key="child.id"
-            :siblings="item.children.length"
+            :siblings="calcSiblings"
     ></v-node>
     <h1 :style="{ lineHeight: '100px' }">i am level {{ item.index }}</h1>
     <p v-text="item.value"></p>
@@ -18,6 +18,17 @@
 </template>
 
 <script>
+  const computeSiblings = (data, index) => {
+    let count = 0
+    if (data.index === index + 1) {
+      count++
+    } else if (data.index < index + 1) {
+      data.children.forEach(item => {
+        count += computeSiblings(item, index, count)
+      })
+    }
+    return count
+  }
   export default {
     name: 'v-node',
     components: {
@@ -53,6 +64,9 @@
           }
         }
         return {}
+      },
+      calcSiblings () {
+        return computeSiblings(this.$store.state.index.data, this.item.index)
       }
     },
     data () {

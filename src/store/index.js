@@ -8,7 +8,8 @@ export function createStore () {
     modules: {
       index: {
         state: {
-          range: null
+          range: null,
+          data: null
         },
         mutations: {
           set_range (state, data) {
@@ -16,6 +17,9 @@ export function createStore () {
           },
           now_range (state, data) {
             state.range.now += data
+          },
+          set_data (state, data) {
+            state.data = data
           }
         },
         actions: {},
