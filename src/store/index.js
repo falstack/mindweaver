@@ -9,9 +9,13 @@ export function createStore () {
       index: {
         state: {
           range: null,
-          data: null
+          data: null,
+          depth: 0
         },
         mutations: {
+          set_depth (state, data) {
+            state.depth = data
+          },
           set_range (state, data) {
             state.range = data
           },

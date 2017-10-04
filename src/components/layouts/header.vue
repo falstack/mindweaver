@@ -1,5 +1,7 @@
 <style lang="scss" scoped="">
-
+  #header {
+    position: absolute;
+  }
 </style>
 
 <template>

@@ -1,6 +1,28 @@
 <style lang="scss" scoped="">
   .node {
     position: absolute;
+    width: 200px;
+    height: 200px;
+
+    .node-item {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      padding: 50px;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid rgba(32,160,255,.2);
+      background-color: rgba(32,160,255,.1);
+      cursor: pointer;
+      user-select: none;
+
+      &:hover {
+        border: 1px solid rgba(32,160,255,.3);
+        background-color: rgba(32,160,255,.2);
+      }
+    }
   }
 </style>
 
@@ -12,8 +34,9 @@
             :key="child.id"
             :siblings="calcSiblings"
     ></v-node>
-    <h1 :style="{ lineHeight: '100px' }">i am level {{ item.index }}</h1>
-    <p v-text="item.value"></p>
+    <div class="node-item" @click="shuttle">
+      <p v-text="item.value"></p>
+    </div>
   </div>
 </template>
 
@@ -78,7 +101,24 @@
 
     },
     methods: {
-
+      shuttle () {
+        if (this.range.now % 1 !== 0) {
+          // moving
+          return
+        }
+        if (this.$store.state.index.depth - this.range.now === this.item.index) {
+          // showing
+          return
+        }
+        const beforeRange = this.range.now
+        const tick = 1 / this.$rate
+        const timer = setInterval(() => {
+          if (this.range.now <= beforeRange - 1) {
+            clearInterval(timer)
+          }
+          this.$store.commit('now_range', -tick)
+        }, tick * this.$duration)
+      }
     },
     mounted () {
 

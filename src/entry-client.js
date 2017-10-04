@@ -1,7 +1,7 @@
 import 'es6-promise/auto'
 import Vue from 'vue'
 import { createApp } from './app'
-import ProgressBar from './components/ProgressBar.vue'
+import ProgressBar from './components/layouts/progress.vue'
 
 // 进度条
 const bar = Vue.prototype.$bar = new Vue(ProgressBar).$mount()

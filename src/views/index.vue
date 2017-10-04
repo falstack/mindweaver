@@ -18,6 +18,7 @@
       <v-range v-model="range.now"
                :min='range.min'
                :max="range.max"
+               :disabled="!$auto"
                :vertical="true"
       ></v-range>
     </div>
@@ -93,7 +94,7 @@
     name: 'v-page-index',
     computed: {
       spaceStyle () {
-        return { perspective: `${this.range.now}px` }
+        return { perspective: `${this.range.now * this.$rate}px` }
       },
       range () {
         return this.$store.state.index.range
@@ -112,32 +113,35 @@
     },
     methods: {
       getData () {
-        this.$store.commit('set_data', resource)
+        this.$store.commit('set_depth', resource.depth)
         this.$store.commit('set_range', {
-          min: this.$rate,
-          max: resource.depth * this.$rate,
-          now: resource.depth * this.$rate
+          min: 1,
+          max: resource.depth,
+          now: resource.depth
         })
+        this.$store.commit('set_data', resource)
       },
       carousel (e) {
         const delta = e.wheelDelta || -e.detail
         if (delta > 0 && this.range.now < this.range.max) {
-          this.$store.commit('now_range', 1)
+          this.$store.commit('now_range', 1 / this.$rate)
         }
         if (delta < 0 && this.range.now >= this.range.min) {
-          this.$store.commit('now_range', -1)
+          this.$store.commit('now_range', -1 / this.$rate)
         }
         e.preventDefault()
       }
     },
     mounted () {
-      // 滚轮事件
-      document.addEventListener('mousewheel', (e) => {
-        this.carousel(e)
-      })
-      document.addEventListener('DOMMouseScroll', (e) => {
-        this.carousel(e)
-      })
+      if (this.$auto) {
+        // 滚轮事件
+        document.addEventListener('mousewheel', (e) => {
+          this.carousel(e)
+        })
+        document.addEventListener('DOMMouseScroll', (e) => {
+          this.carousel(e)
+        })
+      }
     }
   }
 </script>

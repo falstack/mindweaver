@@ -64,15 +64,15 @@
     },
     methods: {
       checkShow () {
-        const index = (this.range.max - this.range.now) / this.$rate - this.item.index
+        const index = this.range.max - this.range.now - this.item.index
         this.show = index >= 0
         if (index >= 1) {
           this.scale = 1
           this.zone = 0
           this.node = false
         } else {
-          this.scale = 1 / (this.range.max / this.$rate - this.item.index)
-          this.zone = this.range.max - (this.item.index + 1) * this.$rate
+          this.scale = 1 / (this.range.max - this.item.index)
+          this.zone = (this.range.max - this.item.index - 1) * this.$rate
           this.node = true
         }
       }

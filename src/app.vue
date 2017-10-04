@@ -22,7 +22,7 @@
 </template>
 
 <script>
-  import vHeader from 'layout/header'
+  import vHeader from 'component/layouts/header'
 
   export default {
     name: 'v-index',
