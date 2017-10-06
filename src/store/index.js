@@ -10,7 +10,8 @@ export function createStore () {
         state: {
           range: null,
           data: null,
-          depth: 0
+          depth: 0,
+          showSubIndex: 0
         },
         mutations: {
           set_depth (state, data) {
@@ -24,6 +25,9 @@ export function createStore () {
           },
           set_data (state, data) {
             state.data = data
+          },
+          set_show_sub_index (state, data) {
+            state.showSubIndex = data
           }
         },
         actions: {},

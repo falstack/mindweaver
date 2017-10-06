@@ -28,13 +28,15 @@
 
 <template>
   <div class="node" :style="placement">
-    <v-node v-if="showChild"
-            v-for="child in item.children"
+    <v-node v-for="child in item.children"
+            v-if="showChild"
             :item="child"
             :key="child.id"
             :siblings="calcSiblings"
     ></v-node>
-    <div class="node-item" @click="shuttle">
+    <div class="node-item"
+         v-if="item.subIndex === $store.state.index.showSubIndex"
+         @click="shuttle">
       <p v-text="item.value"></p>
     </div>
   </div>
@@ -115,6 +117,7 @@
         const timer = setInterval(() => {
           if (this.range.now <= beforeRange - 1) {
             clearInterval(timer)
+            this.$store.commit('set_show_sub_index', this.item.subIndex)
           }
           this.$store.commit('now_range', -tick)
         }, tick * this.$duration)

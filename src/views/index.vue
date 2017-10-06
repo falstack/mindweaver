@@ -26,19 +26,9 @@
 </template>
 
 <script>
-  const tree2Array = (object, array = []) => {
-    array.push(object)
-    if (object.children.length) {
-      object.children.forEach(item => {
-        tree2Array(item, array)
-      })
-    }
-  }
-
   const resource = {
     id: 1,
     index: 0,
-    depth: 4,
     subIndex: 0,
     value: '这是根节点，它有两个子元素，是一个递归树',
     children: [
@@ -90,6 +80,18 @@
     ]
   }
 
+  const computeDepth = (map) => {
+    let depth = 0
+    if (map.children && map.children.length) {
+      map.children.forEach(item => {
+        depth = computeDepth(item)
+      })
+    } else {
+      depth = map.index ? map.index + 1 : 0
+    }
+    return depth
+  }
+
   export default {
     name: 'v-page-index',
     computed: {
@@ -113,11 +115,12 @@
     },
     methods: {
       getData () {
-        this.$store.commit('set_depth', resource.depth)
+        const depth = computeDepth(resource)
+        this.$store.commit('set_depth', depth)
         this.$store.commit('set_range', {
           min: 1,
-          max: resource.depth,
-          now: resource.depth
+          max: depth,
+          now: depth
         })
         this.$store.commit('set_data', resource)
       },
